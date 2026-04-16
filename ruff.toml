@@ -1,0 +1,17 @@
+line-length = 100
+target-version = "py312"
+required-version = ">=0.15.10"
+extend-exclude = [".venv"]
+indent-width = 4
+
+[format]
+quote-style = "single"
+indent-style = "space"
+docstring-code-format = true
+docstring-code-line-length = 65
+
+[per-file-target-version]
+"**/*.py" = "py312"
+
+[lint]
+ignore = ["F403", "F405"]
