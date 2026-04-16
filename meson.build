@@ -6,4 +6,4 @@ project(
 
 py = import('python').find_installation(pure: false)
 
-subdir('orcdbl')
+subdir('src/openrc_dbus_launch')
