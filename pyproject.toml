@@ -29,5 +29,5 @@ dev = [
 ]
 
 [tool.pyrefly]
-[errors]
-missing-import = false
+python-version = "3.12"
+python-interpreter = ".venv/bin/python3"
