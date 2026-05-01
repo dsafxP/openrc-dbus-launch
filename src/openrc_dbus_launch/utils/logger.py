@@ -6,7 +6,7 @@ from typing import Any, final
 
 from prompt_toolkit import HTML, print_formatted_text
 
-from orcdbl.core.config.logger import *
+from openrc_dbus_launch.core.config.logger import *
 
 _log = internal_log
 

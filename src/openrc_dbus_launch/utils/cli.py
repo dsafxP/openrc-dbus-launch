@@ -5,7 +5,7 @@ from typing import Final, NoReturn, Optional, final
 
 import click
 
-from orcdbl.core.config.logger import *
+from openrc_dbus_launch.core.config.logger import *
 
 
 @final
