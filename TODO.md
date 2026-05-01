@@ -2,9 +2,9 @@
 
 ## Repository Bootstrap
 
-- [ ] Initialise git repository
+- [x] Initialise git repository
 - [ ] Write `README.md` with project purpose, status, and build instructions
-- [ ] Add `LICENSE` file (BSD-2-Clause)
+- [x] Add `LICENSE` file (BSD-2-Clause)
 - [ ] Set up `meson.build` root + `meson.options` with:
   - `openrc_initddir` (default `/etc/init.d`)
   - `openrc_confddir` (default `/etc/conf.d`)
@@ -14,7 +14,7 @@
   - `fdpass_shim` feature option (`auto` / `enabled` / `disabled`)
 - [ ] Set up subdir structure: `launcher/`, `fdpass/`, `data/`, `tests/`
 - [ ] Configure `pyproject.toml` for editable installs during development
-- [ ] Add `.gitignore` for `build/`, `__pycache__/`, `*.pyc`, `*.so`
+- [x] Add `.gitignore` for `build/`, `__pycache__/`, `*.pyc`, `*.so`
 
 ## Socket Setup (`launcher/socket.py`)
 
