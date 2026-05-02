@@ -61,6 +61,6 @@ def lazy_init_flags(**kwargs) -> None:
         if hasattr(flags, key):
             setattr(flags, key, value)
 
-    if flags.disable_simulation or flags.virtual_users == 0:
-        flags.disable_simulation = True
-        flags.virtual_users = 0
+    if flags.disable_simulation or flags.virtual_users == 0:  # pyrefly: ignore[missing-attribute]
+        flags.disable_simulation = True  # pyrefly: ignore[missing-attribute]
+        flags.virtual_users = 0  # pyrefly: ignore[missing-attribute]
