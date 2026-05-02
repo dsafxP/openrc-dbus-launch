@@ -15,7 +15,7 @@ class Constants:
             """Traverse up to find the project root (containing pyproject.toml)."""
             curr = Path(__file__).resolve().parent
             while curr != curr.parent:
-                if (curr / 'main.py').exists():
+                if (curr / 'LICENSE').exists():
                     return curr
                 curr = curr.parent
             # Fallback to current directory if not found
@@ -24,7 +24,7 @@ class Constants:
         ROOT: Final[Path] = _get_root()
         """Resolved path to the project root directory."""
 
-        PACKAGE: Final[Path] = ROOT / 'cairn'
+        PACKAGE: Final[Path] = ROOT / 'src' / 'openrc_dbus_launch'
         """Resolved path to the 'orcdbl/' directory."""
 
     class ExitCodes(IntEnum):

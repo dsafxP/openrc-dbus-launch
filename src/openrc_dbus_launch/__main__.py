@@ -2,10 +2,9 @@ __all__ = ['ORCDBL', 'odl']
 
 from typing import Final, final
 
-from openrc_dbus_launch.core.config.logger import *
-from openrc_dbus_launch.core.constants import *
-from openrc_dbus_launch.utils.cli import *
-from openrc_dbus_launch.utils.logger import *
+from constants import *
+from cli import *
+from logger import *
 
 
 def _main() -> int:
@@ -44,3 +43,5 @@ odl: Final[ORCDBL] = ORCDBL()
 Short name for `ORCDBL` (OpenRC D-Bus Launch). We do not expose the class directly, but you may
 import it manually if you wish.
 """
+
+exit(odl.run())

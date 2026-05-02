@@ -1,0 +1,34 @@
+option(
+  'openrc_initddir',
+  type: 'string',
+  value: '/etc/init.d',
+  description: 'Directory for OpenRC init scripts',
+)
+
+option(
+  'openrc_confddir',
+  type: 'string',
+  value: '/etc/conf.d',
+  description: 'Directory for OpenRC conf.d files',
+)
+
+option(
+  'rundir',
+  type: 'string',
+  value: '/run/dbus',
+  description: 'Runtime directory for D-Bus socket and PID file',
+)
+
+option(
+  'dbus_broker_path',
+  type: 'string',
+  value: '/usr/bin/dbus-broker',
+  description: 'Absolute path to the dbus-broker executable',
+)
+
+option(
+  'fdpass_shim',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build the fd-passing shim (auto, enabled, disabled)',
+)

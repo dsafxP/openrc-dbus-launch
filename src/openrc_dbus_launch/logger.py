@@ -1,21 +1,69 @@
-__all__ = ['log_handler', 'log']
+__all__ = ['logcfg', 'loglvl', 'log_handler', 'log']
 
 from datetime import datetime
 from html import escape
-from typing import Any, final
+from typing import Any, Type, Final, final
+from enum import Enum
+import logging as _log
 
 from prompt_toolkit import HTML, print_formatted_text
 
-from openrc_dbus_launch.core.config.logger import *
 
-_log = internal_log
+class LogCfg:
+    class Levels(Enum):
+        # Flags
+        ALL = -100
+        UNDEFINED = -400
+        # Actual levels
+        INFO = _log.INFO
+        DEBUG = _log.DEBUG
+        WARNING = _log.WARNING
+        ERROR = _log.ERROR
+        CRITICAL = _log.CRITICAL
+
+    int_to_str: dict[Levels, str] = {
+        Levels.INFO: 'INFO',
+        Levels.DEBUG: 'DEBUG',
+        Levels.WARNING: 'WARNING',
+        Levels.ERROR: 'ERROR',
+        Levels.CRITICAL: 'CRITICAL',
+    }
+    str_to_int: dict[str, Levels] = {
+        'INFO': Levels.INFO,
+        'DEBUG': Levels.DEBUG,
+        'WARNING': Levels.WARNING,
+        'ERROR': Levels.ERROR,
+        'CRITICAL': Levels.CRITICAL,
+    }
+
+    level_keys: list[str] = str_to_int.keys()  # pyrefly: ignore[bad-assignment]
+    # This is built on the main function by using build_enabled_levels.
+    enabled_levels: list[Levels] = [Levels.CRITICAL]
+
+    def lazy_build_enabled_log_levels(self, against: Levels) -> None:
+        lvl = self.Levels
+        if against == lvl.ALL:
+            self.enabled_levels += [
+                lvl.DEBUG,
+                lvl.INFO,
+                lvl.WARNING,
+                lvl.ERROR,
+            ]
+            return
+
+        # Specific level - only that level
+        self.enabled_levels += list({against})
+
+
+logcfg: Final[LogCfg] = LogCfg()
+loglvl: Final[Type[LogCfg.Levels]] = logcfg.Levels
 
 
 @final
 class LoggerHandler:
     def __init__(self) -> None:
         """
-        The LoggerHandler prints colorful logs to terminal.
+        The LoggerHandler prints colorful logs to the terminal.
         """
         self.logger = _log.getLogger(__name__)
         self.logger.setLevel(loglvl.DEBUG.value)
