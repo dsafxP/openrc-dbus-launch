@@ -25,7 +25,7 @@ class Constants:
         """Resolved path to the project root directory."""
 
         PACKAGE: Final[Path] = ROOT / 'src' / 'openrc_dbus_launch'
-        """Resolved path to the 'orcdbl/' directory."""
+        """Resolved path to the 'openrc_dbus_launch/' directory."""
 
     class ExitCodes(IntEnum):
         # SUCCESS = 0
