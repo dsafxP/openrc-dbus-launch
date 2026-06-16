@@ -5,6 +5,7 @@ from typing import Final, NoReturn, Optional, final
 
 import click
 
+from config import VERSION
 from logger import *
 
 
@@ -19,6 +20,16 @@ flags: Final[CLIFlags] = CLIFlags()
 """Single module-level instance, access the given CLI flags."""
 
 _help = ['-h', '--help']
+_version = ['-V', '--version']
+
+
+# noinspection PyUnusedLocal
+def _on_version(ctx: click.Context, param: click.Parameter, value: bool) -> Optional[NoReturn]:
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo(VERSION)
+    ctx.close()
+    raise Exception('cli.version')
 
 
 # noinspection PyUnusedLocal
@@ -46,6 +57,14 @@ def _log_level_callback(ctx: click.Context, param: click.Parameter, value: str) 
     expose_value=False,
     callback=_on_help,
     help='Show this message and exit.',
+)
+@click.option(
+    *_version,
+    is_flag=True,
+    is_eager=True,
+    expose_value=False,
+    callback=_on_version,
+    help='Show the version and exit.',
 )
 @click.option(
     *['-Ll', '--log-level'],
