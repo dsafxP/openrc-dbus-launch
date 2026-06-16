@@ -26,8 +26,3 @@ dev = [
 
 [tool.uv]
 package = false
-
-[tool.pyrefly]
-python-version = "3.12"
-python-interpreter = ".venv/bin/python3"
-search-path = ["src/openrc_dbus_launch"]
