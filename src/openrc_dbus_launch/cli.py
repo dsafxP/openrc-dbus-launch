@@ -1,11 +1,12 @@
-__all__ = ['flags', 'lazy_init_flags']
+__all__ = ['flags', 'cli']
 
 from dataclasses import dataclass
-from typing import Final, NoReturn, Optional, final
+from typing import Final, NoReturn, final
 
 import click
 
 from config import VERSION
+from constants import *
 from logger import *
 
 
@@ -24,47 +25,22 @@ _version = ['-V', '--version']
 
 
 # noinspection PyUnusedLocal
-def _on_version(ctx: click.Context, param: click.Parameter, value: bool) -> Optional[NoReturn]:
-    if not value or ctx.resilient_parsing:
-        return
-    click.echo(VERSION)
-    ctx.close()
-    raise Exception('cli.version')
-
-
-# noinspection PyUnusedLocal
-def _on_help(ctx: click.Context, param: click.Parameter, value: bool) -> Optional[NoReturn]:
-    if not value or ctx.resilient_parsing:
-        return
-    click.echo(ctx.get_help())
-    ctx.close()
-    # For some reason, click.exceptions.Exit does not work here.
-    # This is a weird solution, I know.
-    raise Exception('cli.help')
-    # raise click.exceptions.Exit(1)
-
-
-# noinspection PyUnusedLocal
 def _log_level_callback(ctx: click.Context, param: click.Parameter, value: str) -> loglvl:
     return logcfg.str_to_int[value]
 
 
+def lazy_init_flags(**kwargs) -> None:
+    # wizardry
+    for key, value in kwargs.items():
+        if hasattr(flags, key):
+            setattr(flags, key, value)
+
+
 @click.command(context_settings={'help_option_names': _help})
-@click.option(
-    *_help,
-    is_flag=True,
-    is_eager=True,
-    expose_value=False,
-    callback=_on_help,
-    help='Show this message and exit.',
-)
-@click.option(
-    *_version,
-    is_flag=True,
-    is_eager=True,
-    expose_value=False,
-    callback=_on_version,
-    help='Show the version and exit.',
+@click.version_option(
+    VERSION,
+    '-V',
+    '--version',
 )
 @click.option(
     *['-Ll', '--log-level'],
@@ -74,12 +50,21 @@ def _log_level_callback(ctx: click.Context, param: click.Parameter, value: str) 
     callback=_log_level_callback,
     help='Logging verbosity.',
 )
-def lazy_init_flags(**kwargs) -> None:
-    # wizardry
-    for key, value in kwargs.items():
-        if hasattr(flags, key):
-            setattr(flags, key, value)
+def cli(**kwargs) -> NoReturn:
+    # We lazily initialize stuff here so that we can catch any issues early
+    lazy_init_flags(**kwargs)
 
-    if flags.disable_simulation or flags.virtual_users == 0:  # pyrefly: ignore[missing-attribute]
-        flags.disable_simulation = True  # pyrefly: ignore[missing-attribute]
-        flags.virtual_users = 0  # pyrefly: ignore[missing-attribute]
+    logcfg.lazy_build_enabled_log_levels(flags.log_level)
+
+    raise SystemExit(_main())
+
+
+def _main() -> int:
+    try:
+        log.info('main hit')
+        return 0
+    except Exception as e:
+        log.critical(e)
+        return exitc.ABORTED
+    finally:
+        ...

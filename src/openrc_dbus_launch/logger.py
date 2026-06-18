@@ -104,7 +104,7 @@ class LoggerHandler:
     def html(self, msg: str, level: loglvl = loglvl.UNDEFINED) -> HTML:
         """Helper: Returns a formatted HTML message. Uses log levels to format the color quicker."""
         color = self._colors.get(level, '#291f1c')
-        return HTML(f'<style fg="{color}">{escape(str(msg))}</style>')
+        return HTML(f'<style fg="{color}">{escape(msg)}</style>')
 
     def log(self, level: loglvl, *message: Any, sep: str = ' ', end: str = '\n') -> None:
         """Prompts the `*message` into the stream with colored formatting."""
